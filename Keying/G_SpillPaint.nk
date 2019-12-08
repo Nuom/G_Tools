@@ -1,28 +1,25 @@
 set cut_paste_input [stack 0]
 version 12.0 v1
-push 0
-push 0
 push $cut_paste_input
 Group {
- inputs 3
- name G_SpillPaint
+ name G_SpillPaint9
  tile_color 0x9fffff
  selected true
  xpos 18411
- ypos -6449
+ ypos -6446
  addUserKnob {20 User}
  addUserKnob {26 textFill l "" +STARTLINE T Fill}
- addUserKnob {18 color}
- color {1 1 1}
+ addUserKnob {18 fillColor l color}
+ fillColor {0.25 0.15 0.1}
  addUserKnob {6 color_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
  addUserKnob {7 fillColorPush l "color push"}
  addUserKnob {4 fillOperation l operation +INVISIBLE M {color overlay "" "" ""}}
  fillOperation overlay
- addUserKnob {18 gain}
- gain 1
+ addUserKnob {18 fillGain l gain}
+ fillGain 1
  addUserKnob {6 gain_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
- addUserKnob {7 saturation}
- saturation 1
+ addUserKnob {7 fillSaturation l saturation}
+ fillSaturation 1
  addUserKnob {7 mixFill l "mix fill"}
  mixFill 1
  addUserKnob {26 ""}
@@ -30,7 +27,6 @@ Group {
  addUserKnob {4 paintMode l mode M {"paint on fill" replace}}
  paintMode replace
  addUserKnob {7 paintColorPush l "color push"}
- paintColorPush 0.5
  addUserKnob {4 paintOperation l operation +INVISIBLE M {color overlay "" ""}}
  paintOperation overlay
  addUserKnob {18 paintGain l gain}
@@ -46,11 +42,12 @@ Group {
  addUserKnob {26 ""}
  addUserKnob {26 note l "" +STARTLINE T "Make sure the paintstrokes from the paint input are colored \nand have an alpha"}
  addUserKnob {26 ""}
- addUserKnob {26 author l "" +STARTLINE T "Made by Gaetan Verheyen\nv 1.0.5"}
+ addUserKnob {26 author l "" +STARTLINE T "Made by Gaetan Verheyen\nv 1.0.6"}
 }
  Input {
   inputs 0
   name Mask
+  label "\[value number]"
   xpos 291
   ypos -230
   number 1
@@ -58,7 +55,7 @@ Group {
  Invert {
   name Invert2
   xpos 291
-  ypos 52
+  ypos 48
  }
  Expression {
   channel0 {-rgba.red -rgba.green -rgba.blue none}
@@ -82,46 +79,43 @@ Group {
  Dot {
   name Dot1
   xpos 325
-  ypos 223
+  ypos 356
  }
  Input {
   inputs 0
   name Paint
-  xpos -1742
-  ypos -856
+  label "\[value number]"
+  xpos -1982
+  ypos -847
   number 2
  }
  Unpremult {
   name Unpremult1
-  xpos -1742
-  ypos -602
+  xpos -1982
+  ypos -735
  }
  Grade {
   white {{parent.paintGain.r} {parent.paintGain.g} {parent.paintGain.b} 1}
   name Grade3
-  xpos -1742
-  ypos -576
+  xpos -1982
+  ypos -699
  }
  Saturation {
   saturation {{parent.paintSaturation}}
   name Saturation2
-  xpos -1742
-  ypos -550
- }
- Premult {
-  name Premult2
-  xpos -1742
-  ypos -524
+  xpos -1982
+  ypos -673
  }
  Dot {
   name Dot8
-  xpos -1708
-  ypos -445
+  selected true
+  xpos -1948
+  ypos -495
  }
 set Nb8f87400 [stack 0]
  Dot {
   name Dot2
-  xpos -1708
+  xpos -1948
   ypos -386
   addUserKnob {20 beDotTab l BeDot}
   addUserKnob {22 rootName l "Add Root Name" -STARTLINE T "nuke.load('beAddRootToLabel.py'), beAddRootToLabel()"}
@@ -129,20 +123,21 @@ set Nb8f87400 [stack 0]
 set Nb8f87000 [stack 0]
  Dot {
   name Dot5
-  xpos -1708
+  xpos -1948
   ypos -175
  }
 push $Nb8f87400
  Input {
   inputs 0
   name Rgb
+  label "\[value number]"
   xpos -94
-  ypos -2006
+  ypos -2058
  }
  Dot {
   name Dot65
   xpos -60
-  ypos -1453
+  ypos -1689
   addUserKnob {20 beDotTab l BeDot}
   addUserKnob {22 rootName l "Add Root Name" -STARTLINE T "nuke.load('beAddRootToLabel.py'), beAddRootToLabel()"}
  }
@@ -150,7 +145,7 @@ set Nb8f86400 [stack 0]
  Dot {
   name Dot84
   xpos -400
-  ypos -1453
+  ypos -1689
   addUserKnob {20 beDotTab l BeDot}
   addUserKnob {22 rootName l "Add Root Name" -STARTLINE T "nuke.load('beAddRootToLabel.py'), beAddRootToLabel()"}
  }
@@ -158,7 +153,7 @@ set Nb8f86000 [stack 0]
  Dot {
   name Dot3
   xpos -1220
-  ypos -1453
+  ypos -1689
   addUserKnob {20 beDotTab l BeDot}
   addUserKnob {22 rootName l "Add Root Name" -STARTLINE T "nuke.load('beAddRootToLabel.py'), beAddRootToLabel()"}
  }
@@ -166,62 +161,62 @@ set Nb8f86000 [stack 0]
   alpha black
   name Shuffle1
   xpos -1254
-  ypos -684
+  ypos -889
  }
  Constant {
   inputs 0
   name Constant5
   xpos -790
-  ypos -1367
+  ypos -1603
  }
  Grade {
-  add {{parent.color.r} {parent.color.g} {parent.color.b} 1}
+  add {{parent.fillColor.r} {parent.fillColor.g} {parent.fillColor.b} {0}}
   name Grade1
   xpos -790
-  ypos -1295
+  ypos -1531
  }
  Grade {
-  white {{parent.gain.r} {parent.gain.g} {parent.gain.b} {curve}}
+  white {{parent.fillGain.r} {parent.fillGain.g} {parent.fillGain.b} {1}}
   name Grade2
   xpos -790
-  ypos -1271
+  ypos -1505
  }
  Saturation {
-  saturation {{parent.saturation}}
+  saturation {{parent.fillSaturation}}
   name Saturation1
   xpos -790
-  ypos -1247
+  ypos -1483
  }
  Shuffle {
   alpha white
   name Shuffle8
   xpos -790
-  ypos -1196
+  ypos -1432
  }
  Dot {
   name Dot13
   xpos -756
-  ypos -1009
+  ypos -1245
  }
 set Nb9f74000 [stack 0]
 push $Nb8f86000
  Dot {
   name Dot12
   xpos -400
-  ypos -1155
+  ypos -1391
  }
 set Nb9fabc00 [stack 0]
  Dot {
   name Dot10
   xpos -605
-  ypos -1155
+  ypos -1391
  }
  PSDMerge {
   inputs 2
   name PSDMerge4
   note_font "Bitstream Vera Sans"
   xpos -639
-  ypos -1012
+  ypos -1248
   operation overlay
   maskChannelInput none
   mix {{mixFill}}
@@ -229,13 +224,13 @@ set Nb9fabc00 [stack 0]
  Dot {
   name Dot9
   xpos -605
-  ypos -765
+  ypos -1001
  }
 push $Nb9f74000
  Dot {
   name Dot31
   xpos -756
-  ypos -895
+  ypos -1131
   addUserKnob {20 beDotTab l BeDot}
   addUserKnob {22 rootName l "Add Root Name" -STARTLINE T "nuke.load('beAddRootToLabel.py'), beAddRootToLabel()"}
  }
@@ -245,7 +240,7 @@ push $Nb9fabc00
   name PSDMerge3
   note_font "Bitstream Vera Sans"
   xpos -434
-  ypos -898
+  ypos -1134
   operation color
   maskChannelInput none
   mix {{mixFill}}
@@ -255,18 +250,18 @@ push $Nb9fabc00
   which {{parent.fillColorPush}}
   name Dissolve2
   xpos -434
-  ypos -773
+  ypos -1009
  }
  Shuffle {
   alpha white
   name Shuffle2
   xpos -434
-  ypos -658
+  ypos -863
  }
  Dot {
   name Dot11
   xpos -400
-  ypos -588
+  ypos -763
  }
 set Nba329c00 [stack 0]
  Switch {
@@ -274,25 +269,26 @@ set Nba329c00 [stack 0]
   which {{parent.paintMode}}
   name Switch1
   xpos -1254
-  ypos -592
+  ypos -767
  }
  Dot {
   name Dot6
   xpos -1220
-  ypos -534
+  ypos -613
  }
 set Nba329400 [stack 0]
  Dot {
   name Dot7
   xpos -1492
-  ypos -534
+  ypos -613
  }
  PSDMerge {
   inputs 2
   name PSDMerge2
   note_font "Bitstream Vera Sans"
+  selected true
   xpos -1526
-  ypos -448
+  ypos -496
   operation overlay
   maskChannelInput none
   mix {{mixPaint}}
@@ -319,7 +315,7 @@ push $Nba329400
   which {{parent.paintColorPush}}
   name Dissolve1
   xpos -1254
-  ypos -308
+  ypos -310
  }
  Copy {
   inputs 2
@@ -333,27 +329,50 @@ push $Nba329400
  Premult {
   name Premult1
   xpos -1254
-  ypos -25
+  ypos -23
  }
  Dot {
   name Dot4
   xpos -1220
-  ypos 79
+  ypos 113
  }
 push $Nba329c00
+ Dot {
+  name Dot16
+  xpos -400
+  ypos -8
+ }
+set Ne222c00 [stack 0]
  Merge2 {
   inputs 2
   bbox B
   mix {{mixPaint}}
   name Merge2
   xpos -434
-  ypos 75
+  ypos 109
  }
-set Nba6ab000 [stack 0]
+push $Ne222c00
+ Dot {
+  name Dot17
+  xpos -258
+  ypos -8
+ }
+ Dot {
+  name Dot15
+  xpos -258
+  ypos 241
+ }
+ Switch {
+  inputs 2
+  which {{"\[exists parent.input2]"}}
+  name Switch2
+  xpos -434
+  ypos 237
+ }
  Dot {
   name Dot85
   xpos -400
-  ypos 223
+  ypos 356
   addUserKnob {20 beDotTab l BeDot}
   addUserKnob {22 rootName l "Add Root Name" -STARTLINE T "nuke.load('beAddRootToLabel.py'), beAddRootToLabel()"}
  }
@@ -365,16 +384,17 @@ push $Nb8f86400
   bbox B
   name Keymix5
   xpos -94
-  ypos 219
+  ypos 352
  }
  Output {
   name Output1
   xpos -94
-  ypos 320
+  ypos 453
  }
-push $Nba6ab000
  Viewer {
+  inputs 0
   frame_range 1-100
+  colour_sample_bbox {-0.2118055522 0.2930555642 -0.1930555552 0.3097222149}
   name Viewer1
   xpos -434
   ypos 1606
